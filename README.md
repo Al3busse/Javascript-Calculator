@@ -1,4 +1,4 @@
-# JavaScript Calculator
+# JavaScript Calculator (missing UI remake)
 
 A simple project created with React for the [FreeCodeCamp](https://www.freecodecamp.org/) Front End Certificate
 
