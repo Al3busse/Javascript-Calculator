@@ -4,12 +4,14 @@ import { evaluate } from "mathjs";
 
 const numbersTest = /\d|\./;
 const zeroTest = /^0+/;
+const operatorTest = /\W/;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      value: null,
       prevValue: [],
       formulaScreen: [],
       currentValue: [0],
@@ -25,18 +27,18 @@ class App extends React.Component {
     this.handleCurrentValue = this.handleCurrentValue.bind(this);
   }
 
-  handlePrevResult(e) {
-    if (numbersTest.test(e.target.value)) {
+  handlePrevResult(valueN) {
+    if (numbersTest.test(valueN)) {
       this.setState({
-        currentValue: e.target.value,
-        formulaScreen: [e.target.value],
+        currentValue: valueN,
+        formulaScreen: [valueN],
         prevCalc: 0,
-        lastValue: [e.target.value],
+        lastValue: [valueN],
       });
     } else {
       this.setState({
-        currentValue: e.target.value,
-        formulaScreen: [this.state.prevCalc, e.target.value],
+        currentValue: valueN,
+        formulaScreen: [this.state.prevCalc, valueN],
         prevCalc: 0,
         lastValue: [],
       });
@@ -51,37 +53,70 @@ class App extends React.Component {
   }
 
   calculate(e) {
+    let valueN = e.target.value;
     if (this.state.prevCalc !== 0) {
-      this.handlePrevResult(e);
+      this.handlePrevResult(valueN);
     } else {
-      if (numbersTest.test(e.target.value)) {
-        if (e.target.value === ".") {
+      if (numbersTest.test(valueN)) {
+        if (valueN === ".") {
           if (this.state.decimalAllow === true) {
             this.setState({ decimalAllow: false, lastOperator: "" });
-            this.state.lastValue.push(e.target.value);
-            this.state.formulaScreen.push(e.target.value);
+            this.state.lastValue.push(valueN);
+            this.state.formulaScreen.push(valueN);
             this.handleCurrentValue();
           }
         } else {
-          this.state.lastValue.push(e.target.value);
+          this.state.lastValue.push(valueN);
           this.handleCurrentValue();
+          this.setState({ lastOperator: "" });
 
           if (!zeroTest.test(this.state.lastValue)) {
-            this.state.formulaScreen.push(e.target.value);
-            console.log(this.state.lastValue);
+            this.state.formulaScreen.push(valueN);
           } else {
             this.setState({ lastValue: [], lastOperator: "" });
           }
-          console.log(this.state.decimalAllow);
         }
+      } else if (!operatorTest.test(valueN)) {
+        this.setState({
+          currentValue: valueN,
+          lastValue: [],
+          decimalAllow: true,
+          lastOperator: "",
+        });
+        this.state.formulaScreen.push(valueN);
       } else {
         this.setState({
-          currentValue: e.target.value,
+          currentValue: valueN,
           lastValue: [],
           decimalAllow: true,
         });
-
-        this.state.formulaScreen.push(e.target.value);
+        if (!operatorTest.test(this.state.lastOperator)) {
+          this.setState({ lastOperator: valueN });
+          this.state.formulaScreen.push(valueN);
+        } else if (valueN === "-") {
+          if (
+            this.state.formulaScreen[this.state.formulaScreen.length - 1] ===
+            "-"
+          ) {
+            this.setState({ lastOperator: valueN });
+            this.state.formulaScreen.splice(-1, 1, valueN);
+          } else {
+            this.setState({ lastOperator: valueN });
+            this.state.formulaScreen.push(valueN);
+          }
+        } else if (
+          this.state.formulaScreen[this.state.formulaScreen.length - 1] ===
+            "-" &&
+          operatorTest.test(
+            this.state.formulaScreen[this.state.formulaScreen.length - 2]
+          )
+        ) {
+          this.setState({ lastOperator: valueN });
+          this.state.formulaScreen.splice(-2, 2, valueN);
+        } else {
+          this.setState({ lastOperator: valueN });
+          this.state.formulaScreen.splice(-1, 1, valueN);
+        }
       }
     }
   }
@@ -96,12 +131,11 @@ class App extends React.Component {
       lastValue: [],
       decimalAllow: true,
     });
-    console.log(this.state.lastValue);
-    console.log(this.state.formulaScreen);
   }
 
   clearDisplay() {
     this.setState({
+      value: "",
       prevValue: [],
       formulaScreen: [],
       currentValue: [0],
