@@ -5,6 +5,7 @@ import { evaluate } from "mathjs";
 const numbersTest = /\d|\./;
 const zeroTest = /^0+/;
 const operatorTest = /\W/;
+const equalSignTest = /=/;
 
 class App extends React.Component {
   constructor(props) {
@@ -122,15 +123,22 @@ class App extends React.Component {
   }
 
   resolve() {
-    let result = this.state.formulaScreen.toString().replace(/,/g, "");
-    let answer = evaluate(result);
-    this.setState({
-      formulaScreen: result + "=" + answer,
-      currentValue: answer,
-      prevCalc: answer,
-      lastValue: [],
-      decimalAllow: true,
-    });
+    if (!equalSignTest.test(this.state.formulaScreen)) {
+      var result = this.state.formulaScreen.toString().replace(/,/g, "");
+      var answer = evaluate(result);
+      this.setState({
+        formulaScreen: result + "=" + answer,
+        currentValue: answer,
+        prevCalc: answer,
+        lastValue: [],
+        decimalAllow: true,
+      });
+    } else {
+      this.setState({
+        formulaScreen: this.state.prevCalc,
+        currentValue: this.state.prevCalc,
+      });
+    }
   }
 
   clearDisplay() {
