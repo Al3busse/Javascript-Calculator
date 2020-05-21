@@ -182,7 +182,11 @@ class App extends React.Component {
         <Container>
           <Row>
             <Col
-              style={{ marginTop: "20px", backgroundColor: "black" }}
+              style={{
+                marginTop: "20px",
+                backgroundColor: "black",
+                border: "3px black solid",
+              }}
               xs={true}
               sm={{ span: 6, offset: 3 }}
               md={{ span: 4, offset: 4 }}
