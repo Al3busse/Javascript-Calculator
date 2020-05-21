@@ -128,20 +128,37 @@ class App extends React.Component {
   }
 
   resolve() {
-    if (!equalSignTest.test(this.state.formulaScreen)) {
-      var result = this.state.formulaScreen.toString().replace(/,\W$|,/g, "");
-      var answer = evaluate(result);
+    if (
+      this.state.formulaScreen.length !== 0 &&
+      !operatorTest.test(this.state.formulaScreen[0])
+    ) {
+      if (!equalSignTest.test(this.state.formulaScreen)) {
+        let result = this.state.formulaScreen.toString().replace(/,\W$|,/g, "");
+        let answer = evaluate(result);
+        this.setState({
+          formulaScreen: result + "=" + answer,
+          currentValue: answer,
+          prevCalc: answer,
+          lastValue: [],
+          decimalAllow: true,
+        });
+      } else {
+        this.setState({
+          formulaScreen: this.state.prevCalc,
+          currentValue: this.state.prevCalc,
+        });
+      }
+    } else if (operatorTest.test(this.state.formulaScreen[0])) {
+      let result = this.state.formulaScreen
+        .toString()
+        .replace(/^\W|,\W$|,/g, "");
+      let answer = evaluate(result);
       this.setState({
         formulaScreen: result + "=" + answer,
         currentValue: answer,
         prevCalc: answer,
         lastValue: [],
         decimalAllow: true,
-      });
-    } else {
-      this.setState({
-        formulaScreen: this.state.prevCalc,
-        currentValue: this.state.prevCalc,
       });
     }
   }
