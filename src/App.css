@@ -21,6 +21,7 @@
   overflow-wrap: break-word;
   word-wrap: break-word;
   min-height: 23px;
+  vertical-align: text-top;
 }
 
 .buttons {
