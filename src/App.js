@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
 import { evaluate } from "mathjs";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 
 const numbersTest = /\d|\./;
 const zeroTest = /^0+/;
@@ -124,7 +129,7 @@ class App extends React.Component {
 
   resolve() {
     if (!equalSignTest.test(this.state.formulaScreen)) {
-      var result = this.state.formulaScreen.toString().replace(/,/g, "");
+      var result = this.state.formulaScreen.toString().replace(/,\W$|,/g, "");
       var answer = evaluate(result);
       this.setState({
         formulaScreen: result + "=" + answer,
@@ -157,63 +162,234 @@ class App extends React.Component {
   render() {
     return (
       <div id='calculator'>
-        <div>
-          <div>{this.state.formulaScreen}</div>
-          <div id='display'>{this.state.currentValue}</div>
-        </div>
-        <div>
-          <button id='clear' onClick={this.clearDisplay} value='AC'>
-            AC
-          </button>
-          <button id='one' onClick={this.calculate} value='1'>
-            1
-          </button>
-          <button id='two' onClick={this.calculate} value='2'>
-            2
-          </button>
-          <button id='three' onClick={this.calculate} value='3'>
-            3
-          </button>
-          <button id='four' onClick={this.calculate} value='4'>
-            4
-          </button>
-          <button id='five' onClick={this.calculate} value='5'>
-            5
-          </button>
-          <button id='six' onClick={this.calculate} value='6'>
-            6
-          </button>
-          <button id='seven' onClick={this.calculate} value='7'>
-            7
-          </button>
-          <button id='eight' onClick={this.calculate} value='8'>
-            8
-          </button>
-          <button id='nine' onClick={this.calculate} value='9'>
-            9
-          </button>
-          <button id='zero' onClick={this.calculate} value='0'>
-            0
-          </button>
-          <button id='decimal' onClick={this.calculate} value='.'>
-            .
-          </button>
-          <button id='add' onClick={this.calculate} value='+'>
-            +
-          </button>
-          <button id='subtract' onClick={this.calculate} value='-'>
-            -
-          </button>
-          <button id='divide' onClick={this.calculate} value='/'>
-            /
-          </button>
-          <button id='multiply' onClick={this.calculate} value='*'>
-            x
-          </button>
-          <button id='equals' onClick={this.resolve} value='='>
-            =
-          </button>
-        </div>
+        <Container>
+          <Row>
+            <Col
+              style={{ marginTop: "20px", backgroundColor: "black" }}
+              xs={true}
+              sm={{ span: 6, offset: 3 }}
+              md={{ span: 4, offset: 4 }}
+              lg={{ span: 4, offset: 4 }}
+              xl={{ span: 4, offset: 4 }}
+            >
+              <Row>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={12}>
+                  <p id='formulaDisplay'>{this.state.formulaScreen}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={12}>
+                  <p id='display'>{this.state.currentValue}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={6}>
+                  <Button
+                    id='clear'
+                    onClick={this.clearDisplay}
+                    value='AC'
+                    className='buttons'
+                    variant='danger'
+                  >
+                    AC
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='divide'
+                    onClick={this.calculate}
+                    value='/'
+                    className='buttons'
+                    variant='secondary'
+                  >
+                    /
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='multiply'
+                    onClick={this.calculate}
+                    value='*'
+                    className='buttons'
+                    variant='secondary'
+                  >
+                    x
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='seven'
+                    onClick={this.calculate}
+                    value='7'
+                    className='buttons'
+                  >
+                    7
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='eight'
+                    onClick={this.calculate}
+                    value='8'
+                    className='buttons'
+                  >
+                    8
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='nine'
+                    onClick={this.calculate}
+                    value='9'
+                    className='buttons'
+                  >
+                    9
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs={3}>
+                  <Button
+                    id='subtract'
+                    onClick={this.calculate}
+                    value='-'
+                    className='buttons'
+                    variant='secondary'
+                  >
+                    -
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs='3'>
+                  <Button
+                    id='six'
+                    onClick={this.calculate}
+                    value='6'
+                    className='buttons'
+                  >
+                    6
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs='3'>
+                  <Button
+                    id='five'
+                    onClick={this.calculate}
+                    value='5'
+                    className='buttons'
+                  >
+                    5
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs='3'>
+                  <Button
+                    id='four'
+                    onClick={this.calculate}
+                    value='4'
+                    className='buttons'
+                  >
+                    4
+                  </Button>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs='3'>
+                  <Button
+                    id='add'
+                    onClick={this.calculate}
+                    value='+'
+                    className='buttons'
+                    variant='secondary'
+                  >
+                    +
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs='9'>
+                  <Row>
+                    <Col
+                      style={{ padding: 0, border: "1px black solid" }}
+                      xs='4'
+                    >
+                      <Button
+                        id='three'
+                        onClick={this.calculate}
+                        value='3'
+                        className='buttons'
+                      >
+                        3
+                      </Button>
+                    </Col>
+                    <Col
+                      style={{ padding: 0, border: "1px black solid" }}
+                      xs='4'
+                    >
+                      <Button
+                        id='two'
+                        onClick={this.calculate}
+                        value='2'
+                        className='buttons'
+                      >
+                        2
+                      </Button>
+                    </Col>
+                    <Col
+                      style={{ padding: 0, border: "1px black solid" }}
+                      xs='4'
+                    >
+                      <Button
+                        id='one'
+                        onClick={this.calculate}
+                        value='1'
+                        className='buttons'
+                      >
+                        1
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      style={{ padding: 0, border: "1px black solid" }}
+                      xs='8'
+                    >
+                      <Button
+                        id='zero'
+                        onClick={this.calculate}
+                        value='0'
+                        className='buttons'
+                      >
+                        0
+                      </Button>
+                    </Col>
+                    <Col
+                      style={{ padding: 0, border: "1px black solid" }}
+                      xs='4'
+                    >
+                      <Button
+                        id='decimal'
+                        onClick={this.calculate}
+                        value='.'
+                        className='buttons'
+                      >
+                        .
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col style={{ padding: 0, border: "1px black solid" }} xs='3'>
+                  <Button
+                    id='equals'
+                    onClick={this.resolve}
+                    value='='
+                    className='buttons'
+                    variant='success'
+                  >
+                    =
+                  </Button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
